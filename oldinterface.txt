@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Analysis with AI</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f0f0f0; /* Change the background color */
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .top-section {
+            background: linear-gradient(to right, #1973db, #55a7ff); /* Gradient background */
+            padding: 50px;
+            text-align: center;
+            color: white; /* Text color */
+        }
+
+        .top-section h1 {
+            margin: 0;
+        }
+
+        .bottom-section {
+            background-color: #ffffff;
+            padding: 30px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .textbox {
+            width: 80%;
+            padding: 20px;
+            font-size: 16px;
+            border: 2px solid #1973db;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .submit-button {
+            padding: 15px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            margin-left: 10px;
+            cursor: pointer;
+            background-color: #1973db;
+            color: white;
+        }
+
+        .submit-button:hover {
+            background-color: #135ca2;
+        }
+        .reset-button {
+            padding: 15px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            margin-left: 10px;
+            cursor: pointer;
+            background-color: #1973db;
+            color: white;
+        }
+
+        .reset-button:hover {
+            background-color: #135ca2;
+        }
+
+        .output-section {
+            background-color: #f0f0f0;
+            padding: 20px;
+            text-align: center;
+            margin: 20px;
+            border-radius: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="top-section" id="inputText">
+            <h1>Welcome to Text Analysis with AI</h1>
+            <p>Enter text below to analyze and summarize</p>
+        </div>
+
+        <div>
+            <h2>Output:</h2>
+            <textarea id="outputSection"readonly></textarea>
+        </div>
+
+        <div class="bottom-section">
+            <input type="text" id="textbox" class="textbox" placeholder="Enter text here">
+            <button class="submit-button" id="submitButton" onclick="generateOutput()">Analyze</button>
+            <button class="reset-button" id="resetButton" onclick="clearFields()">Reset</button>
+
+        </div>
+    </div>
+    <script type="importmap">
+        {
+          "imports": {
+            "@google/generative-ai": "https://esm.run/@google/generative-ai"
+          }
+        }
+    </script>
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+  
+        // Fetch your API_KEY
+        const API_KEY = "AIzaSyAk-DYg6JRz00z5NglWRdZJBxNGIPRwXLQ";
+  
+        // Access your API key (see "Set up your API key" above)
+        const genAI = new GoogleGenerativeAI(API_KEY);
+  
+        // ...
+  
+        const model = genAI.getGenerativeModel({ model: "MODEL_NAME"});
+  
+        //event listener
+        document.addEventListener('DOMContentLoaded', () => {
+            //setting up event listener for submit and reset button
+            const submitButton = document.getElementById('submitButton');
+            submitButton.addEventListener('click',generateOutput);
+
+            const resetButton = document.getElementById('resetButton');
+            resetButton.addEventListener('click',clearFields)
+        });
+        //generate output
+        async function generateOutput(){
+            const inputText = document.getElementById('inputText').value;
+            const outputTextArea = document.getElementById('output');
+
+        //using gemini ai
+        const model = genAI.getGenerativeModel({ model : "gemini-pro"});
+        const result = await model.generateContent(inputText);
+        const response = await result.response;
+        const generatedText = response.text();
+
+        //display
+        outputTextArea.value = generatedText;
+        }
+      </script>
+
+    </body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Analysis with AI</title>
+    <style>
+        body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 40px; /* Increased top margin for more breathing room */
+  background-color: #f5f6fa; /* Lighter background for better contrast */
+  color: #333; /* Darker text for readability */
+}
+
+h1 {
+  font-size: 36px; /* Slightly larger heading */
+  text-align: center; /* Centered for a more balanced look */
+  margin-bottom: 30px; /* Added space below heading */
+}
+
+#inputText {
+  width: 100%; /* Full width for a more immersive input experience */
+  padding: 15px; /* Increased padding for better visual appeal */
+  margin-bottom: 20px; /* Consistent spacing */
+  border: 1px solid #ccc; /* Subtle border to define the input area */
+  border-radius: 5px;
+  font-size: 16px; /* Slightly larger font for easier typing */
+}
+
+#generateButton,
+#clearButton {
+  background-color: #007bff; /* Primary blue color for action buttons */
+  color: #fff;
+  padding: 10px 20px; /* Increased padding for better finger-friendly click targets */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px; /* Space between buttons */
+}
+
+#generateButton:hover,
+#clearButton:hover {
+  background-color: #0062cc; /* Darker hover color for visual feedback */
+}
+
+#output {
+  width: 100%; /* Full width for better text display */
+  height: 300px; /* Increased height to accommodate more text */
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px; /* Slightly smaller font for better readability in a larger area */
+  resize: none; /* Prevent accidental resizing */
+  overflow-y: scroll; /* Allow scrolling for extensive output */
+}
+
+#inputText {
+  /* ... other styles ... */
+  overflow-y: scroll;
+}
+
+footer {
+  margin-top: 40px;
+  text-align: center; /* Centered for a more balanced look */
+  color: #888; /* Lighter color for less visual emphasis */
+}
+
+
+    </style>
+</head>
+<body>
+  <h1>Summarizing Textual data using AI</h1>
+  <p>Enter Text (upto 200 characters):</p>
+  <input type="text" id="inputText" maxlength="200" style="overflow-y: scroll;">
+  <button id="generateButton" onclick="generateOutput()">Generate</button>
+  <button id="clearButton" onclick="clearFields()">Clear</button>
+  
+
+    <h2>Output:</h2>
+    <textarea id="output" readonly></textarea>
+
+    <script type="importmap">
+        {
+          "imports": {
+            "@google/generative-ai": "https://esm.run/@google/generative-ai"
+          }
+        }
+    </script>
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+  
+        // Fetch your API_KEY
+        const API_KEY = "AIzaSyAk-DYg6JRz00z5NglWRdZJBxNGIPRwXLQ";
+        const genAI = new GoogleGenerativeAI(API_KEY);
+  
+        //event listener
+        document.addEventListener('DOMContentLoaded', () => {
+            //setting up event listener for submit and reset button
+            const generateButton = document.getElementById('generateButton');
+            generateButton.addEventListener('click',generateOutput);
+
+            const clearButton = document.getElementById('clearButton');
+            clearButton.addEventListener('click',clearFields)
+        });
+
+
+        //generate output
+        
+        async function processResponse(response) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(response, 'text/html');
+        const content = doc.body.textContent || doc.body.innerText;
+        return content;
+        }
+
+
+
+
+        async function generateOutput(){
+            const inputText = document.getElementById('inputText').value;
+
+            const outputTextArea = document.getElementById('output');
+
+            //prompt
+            const completePrompt = "Analyse and summarize the following textual data also give key points: " + inputText
+
+        //using gemini ai
+        const model = genAI.getGenerativeModel({ model : "gemini-pro"});
+        const result = await model.generateContent(completePrompt);
+        const response = await result.response;
+        const generatedText = response.text();
+
+        //display
+        outputTextArea.value = generatedText;
+        }
+        function clearFields(){
+            document.getElementById('inputText').value ='';
+            document.getElementById('output').value ='';
+        }
+      </script>
+
+    </body>
+</html>

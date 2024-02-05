@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Analysis with AI</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f0f0f0; /* Change the background color */
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        .top-section {
+            background: linear-gradient(to right, #1973db, #55a7ff); /* Gradient background */
+            padding: 50px;
+            text-align: center;
+            color: white; /* Text color */
+        }
+
+        .top-section h1 {
+            margin: 0;
+        }
+
+        .bottom-section {
+            background-color: #ffffff;
+            padding: 30px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .textbox {
+            width: 80%;
+            padding: 20px;
+            font-size: 16px;
+            border: 2px solid #1973db;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .submit-button {
+            padding: 15px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            margin-left: 10px;
+            cursor: pointer;
+            background-color: #1973db;
+            color: white;
+        }
+
+        .submit-button:hover {
+            background-color: #135ca2;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="top-section">
+            <h1>Welcome to Text Analysis with AI</h1>
+            <p>Enter text below to analyze and summarize</p>
+        </div>
+    </div>
+
+    <div class="bottom-section">
+        <input type="text" class="textbox" placeholder="Enter text here">
+        <input type="submit" class="submit-button" value="Analyze">
+    </div>
+</body>
+</html>

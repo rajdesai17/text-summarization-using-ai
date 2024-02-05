@@ -1,0 +1,122 @@
+import React, { useState } from 'react';
+
+function ChatSummary() {
+  const [userInput, setUserInput] = useState('');
+  const [summary, setSummary] = useState('');
+
+  const handleChange = (event) => {
+    setUserInput(event.target.value);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch('https://api.openai.com/v1/engines/davinci/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer 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' // Replace YOUR_API_KEY with your actual API key
+        },
+        body: JSON.stringify({
+          prompt: userInput,
+          max_tokens: 100
+        })
+      });
+
+      const data = await response.json();
+      setSummary(data.choices[0].text.trim());
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Input:
+          <textarea value={userInput} onChange={handleChange} />
+        </label>
+        <button type="submit">Summarize</button>
+      </form>
+      <div>
+        <h2>Summary:</h2>
+        <p>{summary}</p>
+      </div>
+    </div>
+  );
+}
+
+export default ChatSummary;
+
+
+
+////////////////////////////////////////////////////////////////
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 40px; /* Increased top margin for more breathing room */
+  background-color: #f5f6fa; /* Lighter background for better contrast */
+  color: #333; /* Darker text for readability */
+}
+
+h1 {
+  font-size: 36px; /* Slightly larger heading */
+  text-align: center; /* Centered for a more balanced look */
+  margin-bottom: 30px; /* Added space below heading */
+}
+
+#inputText {
+  width: 100%; /* Full width for a more immersive input experience */
+  padding: 15px; /* Increased padding for better visual appeal */
+  margin-bottom: 20px; /* Consistent spacing */
+  border: 1px solid #ccc; /* Subtle border to define the input area */
+  border-radius: 5px;
+  font-size: 16px; /* Slightly larger font for easier typing */
+}
+
+#generateButton,
+#clearButton {
+  background-color: #007bff; /* Primary blue color for action buttons */
+  color: #fff;
+  padding: 10px 20px; /* Increased padding for better finger-friendly click targets */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px; /* Space between buttons */
+}
+
+#generateButton:hover,
+#clearButton:hover {
+  background-color: #0062cc; /* Darker hover color for visual feedback */
+}
+
+#output {
+  width: 100%; /* Full width for better text display */
+  height: 300px; /* Increased height to accommodate more text */
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px; /* Slightly smaller font for better readability in a larger area */
+  resize: none; /* Prevent accidental resizing */
+  overflow-y: scroll; /* Allow scrolling for extensive output */
+}
+
+footer {
+  margin-top: 40px;
+  text-align: center; /* Centered for a more balanced look */
+  color: #888; /* Lighter color for less visual emphasis */
+}
+
+
+    </style>
+</head>
+<body>
+    <h1>Summarizing Textual data using AI</h1>
+    <p>Enter Text (upto 200 characters):</p>
+    <input type="text" id="inputText" maxlength="200">
+    <button id="generateButton" onclick="generateOutput()">Generate</button>
+    <button id="clearButton" onclick="clearFields()">Clear</button>
+
+    <h2>Output:</h2>
+    <textarea id="output" readonly></textarea>

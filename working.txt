@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Analysis with AI</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-top: 20px;
+            background-color: blueviolet;
+            color: aliceblue;
+        }
+        h1{
+            font-size: 32px;
+        }
+        #inputText {
+            width: 300px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #fff;
+            border-radius: 5px;
+        }
+        #generateButton,
+        #clearButton {
+            background-color: aqua;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #generateButton:hover,
+        #clearButton:hover{
+            background-color: green;
+        }
+        #output {
+            margin-top: 20px;
+            width: 100px;
+            height: 150px;
+            padding: 8px;
+            border: 1px solid #fff;
+            border-radius: 5px;
+        }
+        footer {
+            margin-top: 20px;
+            color: #ecf0f1;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Summarizing Textual data using AI</h1>
+    <p>Enter Text (upto 200 characters):</p>
+    <input type="text" id="inputText" maxlength="200">
+    <button id="generateButton" onclick="generateOutput()">Generate</button>
+    <button id="clearButton" onclick="clearFields()">Clear</button>
+
+    <h2>Output:</h2>
+    <textarea id="output" readonly></textarea>
+
+    <script type="importmap">
+        {
+          "imports": {
+            "@google/generative-ai": "https://esm.run/@google/generative-ai"
+          }
+        }
+    </script>
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+  
+        // Fetch your API_KEY
+        const API_KEY = "AIzaSyAk-DYg6JRz00z5NglWRdZJBxNGIPRwXLQ";
+        const genAI = new GoogleGenerativeAI(API_KEY);
+  
+        //event listener
+        document.addEventListener('DOMContentLoaded', () => {
+            //setting up event listener for submit and reset button
+            const generateButton = document.getElementById('generateButton');
+            generateButton.addEventListener('click',generateOutput);
+
+            const clearButton = document.getElementById('clearButton');
+            clearButton.addEventListener('click',clearFields)
+        });
+
+
+        //generate output
+        async function generateOutput(){
+            const inputText = document.getElementById('inputText').value;
+            const outputTextArea = document.getElementById('output');
+
+        //using gemini ai
+        const model = genAI.getGenerativeModel({ model : "gemini-pro"});
+        const result = await model.generateContent(inputText);
+        const response = await result.response;
+        const generatedText = response.text();
+
+        //display
+        outputTextArea.value = generatedText;
+        }
+        function clearFields(){
+            document.getElementById('inputText').value ='';
+            document.getElementById('output').value ='';
+        }
+      </script>
+
+    </body>
+</html>
