@@ -70,74 +70,75 @@ footer {
 </head>
 <body>
   <h1>Summarizing Textual data using AI</h1>
-  <p>Enter Text (upto 200 characters):</p>
-  <input type="text" id="inputText" maxlength="200" style="overflow-y: scroll;">
+  <p>Enter Text (upto 999 characters):</p>
+  <input type="text" id="inputText" maxlength="999" style="overflow-y: scroll;">
   <button id="generateButton" onclick="generateOutput()">Generate</button>
   <button id="clearButton" onclick="clearFields()">Clear</button>
-  
 
-    <h2>Output:</h2>
-    <textarea id="output" readonly></textarea>
+  <h2>Output:</h2>
+  <textarea id="output" readonly></textarea>
 
-    <script type="importmap">
-        {
-          "imports": {
-            "@google/generative-ai": "https://esm.run/@google/generative-ai"
-          }
-        }
-    </script>
-    <script type="module">
-        import { GoogleGenerativeAI } from "@google/generative-ai";
-  
-        // Fetch your API_KEY
-        const API_KEY = "AIzaSyAk-DYg6JRz00z5NglWRdZJBxNGIPRwXLQ";
-        const genAI = new GoogleGenerativeAI(API_KEY);
-  
-        //event listener
-        document.addEventListener('DOMContentLoaded', () => {
-            //setting up event listener for submit and reset button
-            const generateButton = document.getElementById('generateButton');
-            generateButton.addEventListener('click',generateOutput);
+  <script type="importmap">
+    {
+      "imports": {
+        "@google/generative-ai": "https://esm.run/@google/generative-ai"
+      }
+    }
+  </script>
+  <script type="module">
+    import { GoogleGenerativeAI } from "@google/generative-ai";
 
-            const clearButton = document.getElementById('clearButton');
-            clearButton.addEventListener('click',clearFields)
-        });
+    // Fetch your API_KEY
+    const API_KEY = "AIzaSyAkrdPxoGBUiTgB7lyM9whXu4fAK2hRH9s";
+    const genAI = new GoogleGenerativeAI(API_KEY);
+
+    //event listener
+    document.addEventListener('DOMContentLoaded', () => {
+      //setting up event listener for submit and reset button
+      const generateButton = document.getElementById('generateButton');
+      generateButton.addEventListener('click', generateOutput);
+
+      const clearButton = document.getElementById('clearButton');
+      clearButton.addEventListener('click', clearFields)
+    });
 
 
-        //generate output
-        
-        async function processResponse(response) {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(response, 'text/html');
-        const content = doc.body.textContent || doc.body.innerText;
-        return content;
-        }
+    //generate output
 
+    async function processResponse(response) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(response, 'text/html');
+      const content = doc.body.textContent || doc.body.innerText;
+      return content;
+    }
 
 
 
-        async function generateOutput(){
-            const inputText = document.getElementById('inputText').value;
 
-            const outputTextArea = document.getElementById('output');
+    async function generateOutput() {
+      const inputText = document.getElementById('inputText').value;
 
-            //prompt
-            const completePrompt = "Analyse and summarize the following textual data also give key points: " + inputText
+      const outputTextArea = document.getElementById('output');
 
-        //using gemini ai
-        const model = genAI.getGenerativeModel({ model : "gemini-pro"});
-        const result = await model.generateContent(completePrompt);
-        const response = await result.response;
-        const generatedText = response.text();
+      //prompt
+      const completePrompt = "Analyse and summarize the following textual data also give key points: " + inputText
 
-        //display
-        outputTextArea.value = generatedText;
-        }
-        function clearFields(){
-            document.getElementById('inputText').value ='';
-            document.getElementById('output').value ='';
-        }
-      </script>
+      //using gemini ai
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      const result = await model.generateContent(completePrompt);
+      const response = await result.response;
+      const generatedText = response.text();
 
-    </body>
+      //display
+      outputTextArea.value = generatedText;
+    }
+
+    function clearFields() {
+      document.getElementById('inputText').value = '';
+      document.getElementById('output').value = '';
+    }
+  </script>
+
+</body>
 </html>
+
